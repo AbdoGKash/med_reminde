@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:med_reminder/features/home/view/home.dart';
 
 import 'notification/notification.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService.init();
-  tz.initializeTimeZones();
+  //WidgetsFlutterBinding.ensureInitialized();
+  //await NotificationService.init();
+//  tz.initializeTimeZones();
 
   runApp(const MyApp());
 }
@@ -16,21 +18,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const Home(),
+    return ScreenUtilInit(
+      designSize: const Size(393, 852), // for figma
+      minTextAdapt: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Home(),
+      ),
     );
   }
 }
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Homee extends StatefulWidget {
+  const Homee({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Homee> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Homee> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
