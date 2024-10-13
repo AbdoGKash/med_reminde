@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:med_reminder/core/theming/colors.dart';
 import 'package:med_reminder/core/theming/text_styel.dart';
+import 'package:med_reminder/features/home/view/widgets/medicine_card.dart';
 import 'package:med_reminder/features/home/view/widgets/open_dialog.dart';
 
 // ignore: must_be_immutable
@@ -17,12 +19,18 @@ class Home extends StatelessWidget {
         centerTitle: true,
         backgroundColor: ColorsManager.primary,
       ),
-      body: Center(
-        child: Text(
-          'Press the button to open the form',
-          style: TextStyle(fontSize: 20, color: Colors.blueAccent[700]),
-        ),
-      ),
+      body: Padding(
+          padding: const EdgeInsets.all(6.0).dg,
+          child: const SingleChildScrollView(
+            child: Column(
+              children: [
+                MedicineCard(),
+                MedicineCard(),
+                MedicineCard(),
+                MedicineCard()
+              ],
+            ),
+          )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorsManager.primary,
         child: const Icon(Icons.add),

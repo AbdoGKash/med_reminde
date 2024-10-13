@@ -52,6 +52,5 @@ class OpenDialog extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }

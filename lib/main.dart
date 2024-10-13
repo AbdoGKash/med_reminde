@@ -1,25 +1,32 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:med_reminder/features/home/view/home.dart';
-
-import 'notification/notification.dart';
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
-  //await NotificationService.init();
-//  tz.initializeTimeZones();
+// void main() async {
+//   //WidgetsFlutterBinding.ensureInitialized();
+//   //await NotificationService.init();
+// //  tz.initializeTimeZones();
 
-  runApp(const MyApp());
+//   runApp(const MyApp());
+// }
+void main() {
+  runApp(const MedReminder());
 }
+// void main() => runApp(
+//       DevicePreview(
+//         enabled: true,
+//         builder: (context) => const MedReminder(), // Wrap your app
+//       ),
+//     );
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MedReminder extends StatelessWidget {
+  const MedReminder({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(393, 852), // for figma
+    return const ScreenUtilInit(
+      designSize: Size(393, 852), // for figma
       minTextAdapt: true,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -29,46 +36,46 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Homee extends StatefulWidget {
-  const Homee({super.key});
+// class Homee extends StatefulWidget {
+//   const Homee({super.key});
 
-  @override
-  State<Homee> createState() => _HomeState();
-}
+//   @override
+//   State<Homee> createState() => _HomeState();
+// }
 
-class _HomeState extends State<Homee> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                NotificationService.showInstantNotification(
-                    "Instant Notification",
-                    "This shows an instant notifications");
-              },
-              child: const Text('Show Notification'),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                DateTime scheduledDate =
-                    DateTime.now().add(const Duration(seconds: 5));
-                NotificationService.scheduleNotification(
-                  0,
-                  "Scheduled Notification",
-                  "This notification is scheduled to appear after 5 seconds",
-                  scheduledDate,
-                );
-              },
-              child: const Text('Schedule Notification'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class _HomeState extends State<Homee> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             ElevatedButton(
+//               onPressed: () {
+//                 NotificationService.showInstantNotification(
+//                     "Instant Notification",
+//                     "This shows an instant notifications");
+//               },
+//               child: const Text('Show Notification'),
+//             ),
+//             const SizedBox(height: 12),
+//             ElevatedButton(
+//               onPressed: () {
+//                 DateTime scheduledDate =
+//                     DateTime.now().add(const Duration(seconds: 5));
+//                 NotificationService.scheduleNotification(
+//                   0,
+//                   "Scheduled Notification",
+//                   "This notification is scheduled to appear after 5 seconds",
+//                   scheduledDate,
+//                 );
+//               },
+//               child: const Text('Schedule Notification'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
