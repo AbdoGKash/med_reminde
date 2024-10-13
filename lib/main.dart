@@ -1,5 +1,6 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:med_reminder/core/routing/app_router.dart';
 import 'package:med_reminder/features/home/view/home.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -31,6 +32,7 @@ class MedReminder extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Home(),
+        onGenerateRoute: AppRouter.generateRoute,
       ),
     );
   }

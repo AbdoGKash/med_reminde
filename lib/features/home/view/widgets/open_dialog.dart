@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:med_reminder/core/theming/colors.dart';
 import 'package:med_reminder/features/home/view/widgets/build_form_field.dart';
 
+// ignore: must_be_immutable
 class OpenDialog extends StatelessWidget {
   OpenDialog({super.key});
   final _formKey = GlobalKey<FormState>();

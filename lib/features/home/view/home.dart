@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:med_reminder/core/routing/app_router.dart';
+import 'package:med_reminder/core/routing/routers_name.dart';
 import 'package:med_reminder/core/theming/colors.dart';
 import 'package:med_reminder/core/theming/text_styel.dart';
 import 'package:med_reminder/features/home/view/widgets/medicine_card.dart';
@@ -32,14 +34,11 @@ class Home extends StatelessWidget {
             ),
           )),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: ColorsManager.primary,
-        child: const Icon(Icons.add),
-        onPressed: () => showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return OpenDialog();
-            }),
-      ),
+          backgroundColor: ColorsManager.primary,
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context).pushNamed(RoutersName.addMed);
+          }),
     );
   }
 }
