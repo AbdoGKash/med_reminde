@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:med_reminder/core/theming/colors.dart';
 
-class AddSchedule extends StatefulWidget {
-  const AddSchedule({super.key});
+class AddFrequency extends StatefulWidget {
+  const AddFrequency({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _AddScheduleState createState() => _AddScheduleState();
+  _AddFrequencyState createState() => _AddFrequencyState();
 }
 
-class _AddScheduleState extends State<AddSchedule> {
+class _AddFrequencyState extends State<AddFrequency> {
   List<String> items = [
-    '  after breakfast',
-    '  after lunch',
-    '  after dinner',
-    '  before breakfast',
-    '  before lunch',
-    '  before dinner'
+    '  Every day',
+    '  Every two days',
+    '  Every three days',
+    '  Weekly',
+    '  Every ten days',
+    '  Every fifteen days',
+    '  Monthly'
   ];
 
   List<String> selectedItems = [];
@@ -45,7 +46,7 @@ class _AddScheduleState extends State<AddSchedule> {
             child: DropdownButton<String>(
               dropdownColor: ColorsManager.white,
               hint: Text(
-                '  Select an Schedule',
+                '  Select an Frequency',
                 style: TextStyle(color: ColorsManager.primary),
               ),
               style: TextStyle(color: ColorsManager.primary),

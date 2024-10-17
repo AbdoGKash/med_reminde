@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:med_reminder/core/theming/colors.dart';
 import 'package:med_reminder/core/theming/text_styel.dart';
+import 'package:med_reminder/features/add_med/view/widgets/add_frequency.dart';
+import 'package:med_reminder/features/add_med/view/widgets/add_note.dart';
 import 'package:med_reminder/features/add_med/view/widgets/add_schedule.dart';
+import 'package:med_reminder/features/add_med/view/widgets/add_time.dart';
+import 'package:med_reminder/features/add_med/view/widgets/add_type_medicine.dart';
+import 'package:med_reminder/features/add_med/view/widgets/added_button.dart';
 import 'package:med_reminder/features/home/view/widgets/build_form_field.dart';
 
 class AddMedicine extends StatelessWidget {
@@ -28,8 +33,13 @@ class AddMedicine extends StatelessWidget {
             child: Column(
               children: [
                 buildTextFormField('Medicine Name', (value) => field1 = value),
-                buildTextFormField('Frequency', (value) => field2 = value),
-                const AddSchedule()
+                const AddTypeMedicine(),
+                const AddFrequency(),
+                const AddSchedule(),
+                const AddTime(),
+                buildMultilineTextFormField(
+                    'Enter your notes', (value) => field1 = value),
+                buildCustomButton('Submit', () {}),
               ],
             ),
           )),

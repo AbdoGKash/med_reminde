@@ -2,22 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:med_reminder/core/theming/colors.dart';
 
-class AddSchedule extends StatefulWidget {
-  const AddSchedule({super.key});
+class AddTypeMedicine extends StatefulWidget {
+  const AddTypeMedicine({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _AddScheduleState createState() => _AddScheduleState();
+  _AddTypeMedicineState createState() => _AddTypeMedicineState();
 }
 
-class _AddScheduleState extends State<AddSchedule> {
+class _AddTypeMedicineState extends State<AddTypeMedicine> {
   List<String> items = [
-    '  after breakfast',
-    '  after lunch',
-    '  after dinner',
-    '  before breakfast',
-    '  before lunch',
-    '  before dinner'
+    '  Rivet',
+    '  Injection',
+    '  Syrup Medicine',
+    '  Ointment',
   ];
 
   List<String> selectedItems = [];
@@ -45,7 +43,7 @@ class _AddScheduleState extends State<AddSchedule> {
             child: DropdownButton<String>(
               dropdownColor: ColorsManager.white,
               hint: Text(
-                '  Select an Schedule',
+                '  Select an Type Medicine',
                 style: TextStyle(color: ColorsManager.primary),
               ),
               style: TextStyle(color: ColorsManager.primary),
