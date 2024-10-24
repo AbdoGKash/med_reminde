@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:med_reminder/core/routing/app_router.dart';
 import 'package:med_reminder/features/home/view/home.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //   runApp(const MyApp());
 // }
 void main() {
-  runApp(const MedReminder());
+  runApp(const ProviderScope(child: MedReminder()));
 }
 // void main() => runApp(
 //       DevicePreview(

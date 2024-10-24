@@ -1,20 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:med_reminder/core/theming/colors.dart';
 import 'package:med_reminder/core/theming/text_styel.dart';
+import 'package:med_reminder/features/add_med/logic/add_med_notifier.dart';
 import 'package:med_reminder/features/add_med/view/widgets/add_frequency.dart';
 import 'package:med_reminder/features/add_med/view/widgets/add_note.dart';
 import 'package:med_reminder/features/add_med/view/widgets/add_schedule.dart';
 import 'package:med_reminder/features/add_med/view/widgets/add_time.dart';
 import 'package:med_reminder/features/add_med/view/widgets/add_type_medicine.dart';
 import 'package:med_reminder/features/add_med/view/widgets/added_button.dart';
-import 'package:med_reminder/features/home/view/widgets/build_form_field.dart';
+import 'package:med_reminder/features/add_med/view/widgets/build_form_field.dart';
 
-class AddMedicine extends StatelessWidget {
+class AddMedicine extends ConsumerWidget {
   AddMedicine({super.key});
   String? field1, field2;
+  TextEditingController nameController = TextEditingController();
+  String formatTime(TimeOfDay time) {
+    return time.hour.toString().padLeft(2, '0') +
+        ':' +
+        time.minute.toString().padLeft(2, '0');
+  }
+
+  void add(WidgetRef ref) {
+    final frequencyItems = ref.watch(addMedProvider).frequencyItems;
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final frequencyItems = ref.watch(addMedProvider).frequencyItems;
+
+    // final scheduleItems = ref.watch(addMedProvider).scheduleItems;
+
+    // final typeMedicineItems = ref.watch(addMedProvider).typeMedicineItems;
+
+    // final noteText = ref.watch(addMedProvider).noteText;
+    // final nameText = ref.watch(addMedProvider).nameText;
+    // final selectedTimes = ref.watch(addMedProvider).selectedTimes;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -24,7 +47,7 @@ class AddMedicine extends StatelessWidget {
         centerTitle: true,
         backgroundColor: ColorsManager.primary,
         iconTheme: const IconThemeData(
-          color: Colors.white, // لتغيير لون أيقونة زر الرجوع
+          color: Colors.white,
         ),
       ),
       body: Padding(
@@ -32,14 +55,22 @@ class AddMedicine extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                buildTextFormField('Medicine Name', (value) => field1 = value),
+                const CustomTextFormField(),
                 const AddTypeMedicine(),
                 const AddFrequency(),
                 const AddSchedule(),
                 const AddTime(),
-                buildMultilineTextFormField(
-                    'Enter your notes', (value) => field1 = value),
-                buildCustomButton('Submit', () {}),
+                const MultilineTextFormField(),
+                CustomButton(
+                    buttonText: 'Add Medicine',
+                    onPressed: () {
+                      // print(nameText);
+                      // print(noteText);
+                      // print(formatTime(selectedTimes[0]));
+                      // print(frequencyItems);
+                      // print(scheduleItems);
+                      // print(typeMedicineItems);
+                    }),
               ],
             ),
           )),

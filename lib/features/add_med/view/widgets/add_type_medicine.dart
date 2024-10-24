@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:med_reminder/core/theming/colors.dart';
+import 'package:med_reminder/features/add_med/logic/add_med_notifier.dart';
 
-class AddTypeMedicine extends StatefulWidget {
+class AddTypeMedicine extends ConsumerStatefulWidget {
   const AddTypeMedicine({super.key});
 
   @override
@@ -10,7 +12,7 @@ class AddTypeMedicine extends StatefulWidget {
   _AddTypeMedicineState createState() => _AddTypeMedicineState();
 }
 
-class _AddTypeMedicineState extends State<AddTypeMedicine> {
+class _AddTypeMedicineState extends ConsumerState<AddTypeMedicine> {
   List<String> items = [
     '  Rivet',
     '  Injection',
@@ -18,12 +20,13 @@ class _AddTypeMedicineState extends State<AddTypeMedicine> {
     '  Ointment',
   ];
 
-  List<String> selectedItems = [];
+  //List<String> typeMedicineItems = [];
 
   String? selectedItem;
 
   @override
   Widget build(BuildContext context) {
+    final typeMedicine = ref.watch(addMedProvider).typeMedicineItems;
     return Padding(
       padding: const EdgeInsets.all(6.0).dg,
       child: Column(
@@ -61,28 +64,27 @@ class _AddTypeMedicineState extends State<AddTypeMedicine> {
                 );
               }).toList(),
               onChanged: (String? newValue) {
-                setState(() {
-                  selectedItem = newValue;
-                  if (newValue != null && !selectedItems.contains(newValue)) {
-                    selectedItems
-                        .add(newValue); // إضافة العنصر المختار إلى القائمة
-                  }
-                });
+                if (newValue != null && !typeMedicine.contains(newValue)) {
+                  ref.read(addMedProvider.notifier).updateTypeMedicineItems([
+                    ...typeMedicine,
+                    newValue
+                  ]); // add newValue to frequencyItems
+                }
+                selectedItem = newValue;
               },
             ),
           ),
           SizedBox(height: 20.h),
           Wrap(
             spacing: 8.0,
-            children: selectedItems.map((item) {
+            children: typeMedicine.map((item) {
               return Chip(
                 label: Text(item),
                 deleteIcon: Icon(Icons.cancel, color: ColorsManager.red),
                 onDeleted: () {
-                  setState(() {
-                    selectedItems
-                        .remove(item); // حذف العنصر عند الضغط على الأيقونة
-                  });
+                  ref.read(addMedProvider.notifier).updateTypeMedicineItems(
+                        typeMedicine.where((i) => i != item).toList(),
+                      );
                 },
               );
             }).toList(),

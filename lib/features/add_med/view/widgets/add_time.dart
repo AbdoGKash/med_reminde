@@ -1,36 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:med_reminder/core/theming/colors.dart';
+import 'package:med_reminder/features/add_med/logic/add_med_notifier.dart';
 
-class AddTime extends StatefulWidget {
+// وسم AddTime لتحديث وإظهار الأوقات المحددة
+class AddTime extends ConsumerWidget {
   const AddTime({super.key});
 
   @override
-  _AddTimeState createState() => _AddTimeState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final addMedNotifier = ref.read(addMedProvider.notifier);
+    List<TimeOfDay> selectedTimes = ref.watch(addMedProvider).selectedTimes;
 
-class _AddTimeState extends State<AddTime> {
-  List<TimeOfDay> selectedTimes = [];
+    TimeOfDay? selectedTime;
 
-  TimeOfDay? selectedTime;
-
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: selectedTime ?? TimeOfDay.now(),
-    );
-    if (picked != null && picked != selectedTime) {
-      setState(() {
+    Future<void> _selectTime(BuildContext context) async {
+      final TimeOfDay? picked = await showTimePicker(
+        context: context,
+        initialTime: selectedTime ?? TimeOfDay.now(),
+      );
+      if (picked != null && picked != selectedTime) {
         selectedTime = picked;
         if (!selectedTimes.contains(picked)) {
-          selectedTimes.add(picked); // إضافة الوقت المختار إلى القائمة
+          addMedNotifier.updateSelectedTimes(
+              [...selectedTimes, picked]); // إضافة الوقت للمزود
         }
-      });
+      }
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
+    // دالة لتنسيق الوقت بشكل صحيح
+    String formatTime(TimeOfDay time) {
+      return time.hour.toString().padLeft(2, '0') +
+          ':' +
+          time.minute.toString().padLeft(2, '0');
+    }
+
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: Column(
@@ -57,7 +62,7 @@ class _AddTimeState extends State<AddTime> {
                     Text(
                       selectedTime == null
                           ? '  Select a Time'
-                          : '  ${selectedTime!.format(context)}',
+                          : '  ${formatTime(selectedTime!)}', // استخدم دالة التنسيق
                       style: TextStyle(color: ColorsManager.primary),
                     ),
                     Icon(
@@ -74,13 +79,12 @@ class _AddTimeState extends State<AddTime> {
             spacing: 8.0,
             children: selectedTimes.map((time) {
               return Chip(
-                label: Text(time.format(context)),
+                label: Text(formatTime(time)), // استخدم دالة التنسيق هنا أيضاً
                 deleteIcon: Icon(Icons.cancel, color: ColorsManager.red),
                 onDeleted: () {
-                  setState(() {
-                    selectedTimes
-                        .remove(time); // حذف الوقت عند الضغط على الأيقونة
-                  });
+                  addMedNotifier.updateSelectedTimes(selectedTimes
+                      .where((t) => t != time)
+                      .toList()); // حذف الوقت
                 },
               );
             }).toList(),

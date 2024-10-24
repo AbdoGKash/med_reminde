@@ -1,34 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:med_reminder/core/theming/colors.dart';
+import '../../logic/add_med_notifier.dart';
 
-class AddFrequency extends StatefulWidget {
+class AddFrequency extends ConsumerStatefulWidget {
   const AddFrequency({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _AddFrequencyState createState() => _AddFrequencyState();
 }
 
-class _AddFrequencyState extends State<AddFrequency> {
+class _AddFrequencyState extends ConsumerState<AddFrequency> {
+  // قائمة الخيارات في Dropdown
   List<String> items = [
-    '  Every day',
-    '  Every two days',
-    '  Every three days',
-    '  Weekly',
-    '  Every ten days',
-    '  Every fifteen days',
-    '  Monthly'
+    'Every day',
+    'Every two days',
+    'Every three days',
+    'Weekly',
+    'Every ten days',
+    'Every fifteen days',
+    'Monthly'
   ];
 
-  List<String> selectedItems = [];
-
+  // متغير لتخزين العنصر المحدد
   String? selectedItem;
 
   @override
   Widget build(BuildContext context) {
+    // استدعاء الحالة الحالية من provider
+    final frequencyItems = ref.watch(addMedProvider).frequencyItems;
+
     return Padding(
-      padding: const EdgeInsets.all(6.0).dg,
+      padding: const EdgeInsets.all(6.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -46,7 +50,7 @@ class _AddFrequencyState extends State<AddFrequency> {
             child: DropdownButton<String>(
               dropdownColor: ColorsManager.white,
               hint: Text(
-                '  Select an Frequency',
+                'Select a Frequency',
                 style: TextStyle(color: ColorsManager.primary),
               ),
               style: TextStyle(color: ColorsManager.primary),
@@ -64,28 +68,38 @@ class _AddFrequencyState extends State<AddFrequency> {
                 );
               }).toList(),
               onChanged: (String? newValue) {
-                setState(() {
-                  selectedItem = newValue;
-                  if (newValue != null && !selectedItems.contains(newValue)) {
-                    selectedItems
-                        .add(newValue); // إضافة العنصر المختار إلى القائمة
-                  }
-                });
+                if (newValue != null && !frequencyItems.contains(newValue)) {
+                  ref.read(addMedProvider.notifier).updateFrequency([
+                    ...frequencyItems,
+                    newValue
+                  ]); // add newValue to frequencyItems
+                }
+                selectedItem = newValue;
+                // setState(() {
+                //   selectedItem = newValue;
+                //   // إضافة العنصر إلى قائمة frequencyItems
+                //   if (newValue != null && !frequencyItems.contains(newValue)) {
+                //     ref.read(addMedProvider.notifier).updateFrequency([
+                //       ...frequencyItems,
+                //       newValue
+                //     ]); // add newValue to frequencyItems
+                //   }
+                // });
               },
             ),
           ),
           SizedBox(height: 20.h),
           Wrap(
             spacing: 8.0,
-            children: selectedItems.map((item) {
+            children: frequencyItems.map((item) {
               return Chip(
                 label: Text(item),
                 deleteIcon: Icon(Icons.cancel, color: ColorsManager.red),
                 onDeleted: () {
-                  setState(() {
-                    selectedItems
-                        .remove(item); // حذف العنصر عند الضغط على الأيقونة
-                  });
+                  // إزالة العنصر من قائمة frequencyItems
+                  ref.read(addMedProvider.notifier).updateFrequency(
+                        frequencyItems.where((i) => i != item).toList(),
+                      );
                 },
               );
             }).toList(),

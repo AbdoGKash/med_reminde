@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:med_reminder/core/theming/colors.dart';
 
-class AddSchedule extends StatefulWidget {
+import '../../logic/add_med_notifier.dart';
+
+class AddSchedule extends ConsumerStatefulWidget {
   const AddSchedule({super.key});
 
   @override
@@ -10,7 +13,7 @@ class AddSchedule extends StatefulWidget {
   _AddScheduleState createState() => _AddScheduleState();
 }
 
-class _AddScheduleState extends State<AddSchedule> {
+class _AddScheduleState extends ConsumerState<AddSchedule> {
   List<String> items = [
     '  after breakfast',
     '  after lunch',
@@ -20,12 +23,13 @@ class _AddScheduleState extends State<AddSchedule> {
     '  before dinner'
   ];
 
-  List<String> selectedItems = [];
+  // List<String> scheduleItems = [];
 
   String? selectedItem;
 
   @override
   Widget build(BuildContext context) {
+    final scheduleItems = ref.watch(addMedProvider).scheduleItems;
     return Padding(
       padding: const EdgeInsets.all(6.0).dg,
       child: Column(
@@ -63,28 +67,27 @@ class _AddScheduleState extends State<AddSchedule> {
                 );
               }).toList(),
               onChanged: (String? newValue) {
-                setState(() {
-                  selectedItem = newValue;
-                  if (newValue != null && !selectedItems.contains(newValue)) {
-                    selectedItems
-                        .add(newValue); // إضافة العنصر المختار إلى القائمة
-                  }
-                });
+                if (newValue != null && !scheduleItems.contains(newValue)) {
+                  ref.read(addMedProvider.notifier).updateScheduleItems([
+                    ...scheduleItems,
+                    newValue
+                  ]); // add newValue to frequencyItems
+                }
+                selectedItem = newValue;
               },
             ),
           ),
           SizedBox(height: 20.h),
           Wrap(
             spacing: 8.0,
-            children: selectedItems.map((item) {
+            children: scheduleItems.map((item) {
               return Chip(
                 label: Text(item),
                 deleteIcon: Icon(Icons.cancel, color: ColorsManager.red),
                 onDeleted: () {
-                  setState(() {
-                    selectedItems
-                        .remove(item); // حذف العنصر عند الضغط على الأيقونة
-                  });
+                  ref.read(addMedProvider.notifier).updateScheduleItems(
+                        scheduleItems.where((i) => i != item).toList(),
+                      );
                 },
               );
             }).toList(),
